@@ -16,6 +16,7 @@
 )
 
 (defun getProjectElevFromItemTp(Proper)
+  ;Proper - список
 	;Возвращает текст из скобок
 	
 	(setq nameOfItem (cdr(assoc 0 Proper)))
@@ -23,7 +24,6 @@
 		((= nameOfItem "MULTILEADER")
 			(progn
 				(cdr(assoc 304 Proper))
-				
 			)
 		)
 		((= nameOfItem "TEXT")
@@ -40,15 +40,12 @@
 			(progn
 				(setq n (cdr(assoc 304 Propy)))
 				(print n)
-				(setq n (find_num_before n))
-				(print n)
-				(print "ura3")
+				;(setq n (find_num_before n))
 				(atof n)
 			));
 	 	((= nameOfItem "TEXT")
 			(progn
 				(setq Number3 (cdr(assoc 1 Propy)))
-				(print "text4")
 				(atof Number3)
 			));
 	)
@@ -61,16 +58,12 @@
 		((= nameOfItem "MULTILEADER")
 			(progn
 				(setq n (cdr(assoc 304 Propy)))
-				(print n)
 				(setq n (find_num_before n))
-				(print n)
-				(print "ura3")
 				(atof n)
 			));
 	 	((= nameOfItem "TEXT")
 			(progn
 				(setq Number3 (cdr(assoc 1 Propy)))
-				(print "text4")
 				(atof Number3)
 			));
 	)
@@ -83,7 +76,6 @@
 		((= nameOfItem "MULTILEADER")
 			(progn
 				(setq per 304)
-				
 			)
 		)
 		((= nameOfItem "TEXT")

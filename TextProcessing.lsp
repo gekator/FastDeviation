@@ -1,6 +1,7 @@
 
 (defun find_number(a /)
-
+;a - текст
+;Находит число внутри скобок 500/X(600)
 	(setq iz 1)
 	(setq xz 1)
 	(setq l (strlen a))
@@ -97,7 +98,8 @@
 
 
 (defun find_num_before(a /)
-	
+;a - текст
+;Находит число перед скобками 500/X(600)
 	(setq iz 1)
 	(setq xz 1)
 	(setq l (strlen a))

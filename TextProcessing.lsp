@@ -88,14 +88,14 @@
 	(entmod PropItem)
 )
 
-
 (defun find_num_before(a /)
-;a - текст
-;Находит число перед скобками 500/X(600)
+	;добавил подсчет не больше длины строки и вывод текста без переноса строки 23.03.2020
+  ;a - текст
+  ;Находит число перед скобками 500/X(600)
 	(setq iz 1)
 	(setq xz 1)
 	(setq l (strlen a))
-	(while(/= (substr a iz 1) "\\" )
+	(while(and (/= (substr a iz 1) "\\" ) (<= iz l))
 		(setq iz (+ iz 1))
 	)
 	(substr a 1 (- iz 1))

@@ -1,19 +1,25 @@
 (defun find_number(a /)
 ;a - текст
-;Находит число внутри скобок 500/X(600)
+;Находит число на второй строке (факт) (setq a "500\\X600")(find_number a)
+  ;(setq a "3.993\\P{\\C7;4.006}")(find_number a)
+  ;(setq a "3.993\\P{\\C256;\\c0;4.012}")(find_number a)
+  ;(setq a  "X=1446127.852\\PY=655971.131")
 	(setq iz 1)
 	(setq xz 1)
 	(setq l (strlen a))
-	(while ( and (/= (substr a iz 1) "(") (< iz l))
+  (if (= (substr a iz 2) "X=")
+    (setq iz (+ iz 1))
+  )
+	(while ( and (and (/= (substr a iz 1) "X") (/= (substr a iz 1) "P")) (< iz l))
 		(setq iz (+ iz 1))
 	)
-	(while ( and (/= (substr a xz 1) ")") (< iz l))
+	(while  (< xz l)
 		(setq xz (+ xz 1))
 	)
 	(setq len (- xz iz))
-	(setq st (substr a (+ iz 1) (- len 1)))
+	(setq st (substr a (+ iz 1) len))
   (cond
-    ((/= (substr st 1 1) = "{")
+    ((/= (substr st 1 1) "{")
       (substr a (+ iz 1) len)
     )
     
@@ -21,6 +27,28 @@
       (find_number_in_color st)
     )
   )
+)
+
+(defun find_number_in_color(a / iv xv v len )
+;a - текст
+;Находит число внутри скобок 500/X(600)
+  ;(setq a "{\\C256;\\c0;4.012}")
+	(setq iv 1)
+	(setq xv 1)
+	(setq v (strlen a))
+	(while  (< iv v)
+		
+    (if (= (substr a iv 1) ";")
+      (setq mx iv)
+      (princ (strcat (substr a iv 1) "\n"))
+    )
+   (setq iv (+ iv 1))
+	)
+	(while ( and (/= (substr a xv 1) "}") (< xv v))
+		(setq xv (+ xv 1))
+	)
+	(setq len (- xv mx))
+	(substr a (+ mx 1) (- len 1))
 )
 
 (defun find_num_before(a / iz l xz)
@@ -39,7 +67,7 @@
 	    )
     )
   )
-  ;(print iz)(print start)
+  (print iz)(print start)
   
  (cond
    ((and (= iz l) (< start iz)) (substr a start (- iz (- start 1))))
@@ -74,7 +102,7 @@
 		((= nameOfItem "MULTILEADER")
 			(progn
 				(setq n (cdr(assoc 304 Propy)))
-				;(print n)
+				(print n)
 				;(setq n (find_num_before n))
 				(atof n)
 			));
@@ -278,11 +306,11 @@
 			(setq per 1)
 		)
 	);end cond
-  ;(princ PropItem)
+  (princ PropItem)
 	(setq PropItem (subst (cons per fNum) (assoc per PropItem) PropItem))
-  (setq PropItem (subst (cons 62 3) (assoc 62 PropItem) PropItem))
+  ;(setq PropItem (subst (cons 62 4) (assoc 62 PropItem) PropItem))
 	;(setq PropItem (subst (cons 62 2) (assoc 62 PropItem) PropItem))
-  ;(princ PropItem)
+  (princ PropItem)
 	(entmod PropItem)
 )
 
@@ -324,6 +352,44 @@
   (changeItemSmartProectFact Proper projText factText) ;записываем!!!!!!!!!!!!!
 )
 
+(defun PutProjectFactInItemCol ( Proper proreal factreal /  nameOfItem )
+  ;Преобразовывает данные в соответствии с форматом потом закидывает их в объект
+  ;
+  (setq nameOfItem (cdr(assoc 0 Proper)));Number_pr 
+  (cond 
+		((or (= nameOfItem "TEXT") (= nameOfItem "MULTILEADER"))
+			(progn
+        (cond
+          ((= proreal "")
+            (strcat "")
+           )
+          ((/= proreal "")
+            (setq projText (rtos (/ proreal 1000.0) 2 3))
+          ) 
+        )
+				  
+          (setq factText (rtos (/ factreal 1000.0) 2 3))
+			)
+		)
+		((= nameOfItem "DIMENSION") 
+			(progn
+        (cond
+          ((= proreal ""); (= Number_pr "")
+            (setq projText "")
+           )
+          ((/= proreal "")
+            (setq projText (rtos proreal 2 0))
+          ) 
+        )
+				
+        (setq factText (rtos factreal 2 0))
+			)
+		)
+	);end cond
+  (setq factText (strcat "{\\C7;" factText "}"))
+  (changeItemSmartProectFact Proper projText factText) ;записываем!!!!!!!!!!!!!
+)
+
 (defun changeItemSmartProectFact (PropItem  pro fact / per razd)
   ;Умное изменение объектов, для проекта и факта
   ;принимает готовый к вводу текст
@@ -340,12 +406,12 @@
 				(setq per 304)
         (setq textOfMultilidear (getProjectElevFromItemFactText PropItem))
         (if ( = (substr textOfMultilidear 1 1) "+") (setq sign_plus "+"))
-        (setq textin (strcat sign_plus pro "\\P(" sign_plus fact ")"))
+        (setq textin (strcat sign_plus pro "\\P" sign_plus fact ""))
 			)
 		)
 		((and (or  (= nameOfItem "DIMENSION") (= nameOfItem "MTEXT")) )
 			(setq per 1)
-      (setq textin (strcat pro "\\X(" fact ")"))
+      (setq textin (strcat pro "\\X" fact ""))
 		)
     
     ((and (= nameOfItem "TEXT") (/= (strlen fact) 0))
@@ -475,10 +541,5 @@
 ;;;
 (- Maxnum (fix (* (- Maxnum Minnum -1) (_dwgru-random)))) ;;;Vov.ka http://forum.dwg.ru/showpost.php?p=798277&postcount=9
 )
-
-
-
-
-
 
 

@@ -1,2 +1,2 @@
 # FastDeviation
-Библиотека autolisp для autocad
+library autolisp for autocad

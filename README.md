@@ -39,7 +39,6 @@ This repository contains a set of powerful **AutoLISP utilities** designed for s
 | `TextProcessing.txt` | Core library: parsing, number extraction, text updating |
 | `21sumrazcpyinproj.txt` | Example command: **sum two fact values** and write result + project value into a third label |
 
-> 💡 **Note**: These `.txt` files are actually **AutoLISP source code** — rename to `.lsp` to load in AutoCAD.
 
 ---
 

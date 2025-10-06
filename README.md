@@ -36,8 +36,8 @@ This repository contains a set of powerful **AutoLISP utilities** designed for s
 
 | File | Purpose |
 |------|--------|
-| `TextProcessing.txt` | Core library: parsing, number extraction, text updating |
-| `21sumrazcpyinproj.txt` | Example command: **sum two fact values** and write result + project value into a third label |
+| `TextProcessing.lsp` | Core library: parsing, number extraction, text updating |
+| `21sumrazcpyinproj.lsp` | Example command: **sum two fact values** and write result + project value into a third label |
 
 
 ---
